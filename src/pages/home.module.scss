@@ -1,1 +1,49 @@
-// TODO
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+.posts {
+  margin-left: 6rem;
+  a {
+    text-shadow: 0.1rem 0rem 0.4rem black;
+    display: block;
+    & + a {
+      margin-top: 2rem;
+      padding-top: 1rem;
+    }
+
+    strong{
+      
+      font-weight: bold;
+      font-size: 1.50rem;
+      color: var(--heading);
+    }
+    p{
+      margin-top: 0.50rem;
+      font-weight: 400;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      color: var(--body);
+    }
+    ul{
+      display: flex;
+      gap: 2rem;
+      li{
+        color: var(--info);
+        font-size: 0.875rem;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+      }
+    }
+  }
+  button{
+    margin-top: 5rem;
+    color: var(--highlight);
+    font-weight: 500;
+    background: none;
+    border: none;
+  }
+}
