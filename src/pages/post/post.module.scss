@@ -1,1 +1,68 @@
-// TODO
+.bannerDiv{
+  max-height: 20rem;
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img{
+    max-height: 30rem;
+  }
+}
+
+.content{
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+
+.contentHeading{
+  h1{
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--heading);
+  }
+  ul{
+    margin-top: 2rem;
+    display: flex;
+    gap: 2rem;
+      li{
+        color: var(--info);
+        font-size: 0.875rem;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+      }
+  }
+}
+.contentBody{
+  max-width: 50%;
+  text-align: justify;
+  h2,h3,h4{
+    font-size: 2.25rem;
+    color: var(--heading);
+    font-weight: 700;
+    margin: 3rem 0;
+  }
+  p,span,a,ul{
+    color: var(--body);
+    font-size: 1.125rem;
+    line-height: 1.8;
+    margin: 1.8rem 0;
+  }
+  a{
+    color: var(--highlight);
+  }
+  strong{
+    font-weight: 700;
+    color: var(--body);
+  }
+  ul{
+    padding-left: 1.5rem;
+    li{
+      margin: 0.5rem 0;
+    }
+  }
+}
+}
