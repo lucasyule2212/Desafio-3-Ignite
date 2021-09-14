@@ -17,6 +17,7 @@ import { getPrismicClient } from '../../services/prismic';
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
 import Header from '../../components/Header';
+import Comments from '../../components/Comments';
 
 interface Post {
   id: string;
@@ -40,17 +41,20 @@ interface Post {
 
 interface PostProps {
   post: Post;
-  navigation:{
+  navigation: {
     prevPost: Post[] | null;
     nextPost: Post[] | null;
-  }
+  };
+  preview;
 }
 
 export default function Post({
   post,
- navigation
+  navigation,
+  preview,
 }: PostProps): JSX.Element {
   const router = useRouter();
+  console.log(preview);
 
   if (router.isFallback) {
     return <h1>Carregando...</h1>;
@@ -119,8 +123,8 @@ export default function Post({
       </main>
 
       <div className={styles.navigation}>
-  
-        {navigation.prevPost.length >0 && (
+
+        {navigation.prevPost.length > 0 && (
           <div className={styles.previousDiv}>
             <h3>{navigation.prevPost[0].data.title}</h3>
             <Link href={`${navigation.prevPost[0].uid}`}>
@@ -135,8 +139,16 @@ export default function Post({
               <a>Próximo Post</a>
             </Link>
           </div>
-        )}
+        )}     
       </div>
+      <Comments/>
+      {preview && (
+          <aside className={styles.preview}>
+            <Link href="/api/exit-preview">
+              <a>Sair do modo Preview</a>
+            </Link>
+          </aside>
+        )}
     </>
   );
 }
@@ -159,11 +171,17 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async ({
+  params,
+  preview = false,
+  previewData,
+}) => {
   const prismic = getPrismicClient();
   const { slug } = params;
 
-  const response = await prismic.getByUID('pos', String(slug), {});
+  const response = await prismic.getByUID('pos', String(slug), {
+    ref: previewData?.ref ?? null,
+  });
 
   const prevPost = await prismic.query(
     [Prismic.Predicates.at('document.type', 'pos')],
@@ -207,10 +225,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   return {
     props: {
       post,
-      navigation:{
+      navigation: {
         prevPost: prevPost?.results,
         nextPost: nextPost?.results,
-      }   
+      },
+      preview,
     },
   };
 };

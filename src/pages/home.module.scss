@@ -47,3 +47,16 @@
     border: none;
   }
 }
+.preview{
+  width: 60%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--background);
+  margin: 0 auto;
+  margin-top: 4rem;
+  padding: 1.25rem;
+  background-color: var(--heading);
+  box-shadow: 0.1rem 0rem 0.4rem black;
+  font-weight: 600;
+}

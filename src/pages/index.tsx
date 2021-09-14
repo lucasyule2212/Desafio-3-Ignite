@@ -34,9 +34,10 @@ interface PostPagination {
 
 interface HomeProps {
   postsPagination: PostPagination;
+  preview
 }
 
-export default function Home({ postsPagination }: HomeProps): JSX.Element {
+export default function Home({ postsPagination,preview }: HomeProps): JSX.Element {
   const formattedPosts = postsPagination.results.map(post => {
     return {
       ...post,
@@ -47,13 +48,15 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
       ),
     };
   });
+  console.log(preview);
+  
 
   const [posts, setPosts] = useState<Post[]>(formattedPosts);
   const [nextPage, setNextPage] = useState(postsPagination.next_page);
   // const [currentPage,setCurrentPage] = useState(1);
 
   async function handleLoadMorePosts() {
-    if (nextPage === null) { 
+    if (nextPage === null) {
       return;
     }
 
@@ -84,12 +87,12 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
       <Head>
         <title>YuleSpace | Home</title>
       </Head>
-      <Header/>
-      <main className = {styles.container}>
-        <div className = {styles.posts}>
+      <Header />
+      <main className={styles.container}>
+        <div className={styles.posts}>
           {posts.map(post => {
             return (
-              <Link key={post.uid} href={`/post/${post.uid}`} >
+              <Link key={post.uid} href={`/post/${post.uid}`}>
                 <a>
                   <strong>{post.data.title}</strong>
                   <p>{post.data.subtitle}</p>
@@ -116,18 +119,29 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
             ''
           )}
         </div>
+        {preview && (
+          <aside className={styles.preview}>
+            <Link href="/api/exit-preview">
+              <a>Sair do modo Preview</a>
+            </Link>
+          </aside>
+        )}
       </main>
-      </>
+    </>
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async ({
+  preview = false,
+  previewData,
+}) => {
   const prismic = getPrismicClient();
 
   const postsResponse: PostPagination = await prismic.query(
     [Prismic.predicates.at('document.type', 'pos')],
     {
       pageSize: 2,
+      ref: previewData?.ref ?? null,
     }
   );
 
@@ -151,6 +165,7 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       postsPagination,
+      preview,
     },
   };
 };
